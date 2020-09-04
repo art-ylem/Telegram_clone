@@ -1,9 +1,8 @@
-package com.example.telegram.ui.fragments
+package com.example.telegram.ui.fragments.register
 
 import androidx.fragment.app.Fragment
-import com.example.telegram.MainActivity
 import com.example.telegram.R
-import com.example.telegram.activities.RegisterActivity
+import com.example.telegram.database.*
 import com.example.telegram.utils.*
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.fragment_enter_code.*
@@ -13,7 +12,7 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
 
     override fun onStart() {
         super.onStart()
-        (activity as RegisterActivity).title = phoneNumber
+        APP_ACTIVITY.title = phoneNumber
         register_input_code.addTextChangedListener(AppTextWatcher {
             val string = register_input_code.text.toString()
             if (string.length == 6) {
@@ -33,14 +32,22 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
                 dataMap[CHILD_PHONE] = phoneNumber
                 dataMap[CHILD_USERNAME] = uid
 
-                REF_DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(dataMap)
-                    .addOnCompleteListener { task2 ->
-                        if (task2.isSuccessful) {
-                            showToast("Welcome")
-                            (activity as RegisterActivity).replaceActivity(MainActivity())
-                        } else {
-                            showToast(task2.exception?.message.toString())
-                        }
+                REF_DATABASE_ROOT.child(
+                    NODE_PHONES
+                ).child(phoneNumber).setValue(uid)
+                    .addOnFailureListener { showToast(it.message.toString()) }
+                    .addOnCompleteListener {
+
+                        REF_DATABASE_ROOT.child(
+                            NODE_USERS
+                        ).child(uid).updateChildren(dataMap)
+                            .addOnCompleteListener {
+                                showToast("Welcome")
+                                restartActivity()
+                            }
+                            .addOnFailureListener {
+                                showToast(it.message.toString())
+                            }
                     }
 
 

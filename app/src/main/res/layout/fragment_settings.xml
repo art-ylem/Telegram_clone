@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ChatsFragment">
+    tools:context=".ui.fragments.MainFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settings_header_block"
@@ -19,8 +19,8 @@
             android:id="@+id/settings_user_photo"
             android:layout_width="@dimen/settings_user_photo_width"
             android:layout_height="@dimen/settings_user_photo_height"
-            android:layout_marginStart="@dimen/horizontal_margin"
-            android:layout_marginLeft="@dimen/horizontal_margin"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginLeft="@dimen/app_margin"
             android:src="@drawable/default_photo"
             app:civ_circle_background_color="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,8 +31,8 @@
             android:id="@+id/settings_full_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_margin"
-            android:layout_marginTop="@dimen/vertical_margin"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginTop="@dimen/app_small_margin"
             tools:text="@string/settings_default_username"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/normal_text"
@@ -44,7 +44,7 @@
             android:id="@+id/settings_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginStart="@dimen/app_margin"
             android:layout_marginTop="10dp"
             tools:text="@string/settings_default_status"
             android:textColor="@color/colorAccentDark"
@@ -60,8 +60,8 @@
         android:id="@+id/settings_text_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/horizontal_margin"
-        android:layout_marginLeft="@dimen/horizontal_margin"
+        android:layout_marginStart="@dimen/app_margin"
+        android:layout_marginLeft="@dimen/app_margin"
         android:layout_marginTop="@dimen/vertical_large_margin"
         android:text="@string/settings_text_account"
         android:textColor="@color/colorPrimary"
@@ -166,10 +166,10 @@
         android:layout_width="@dimen/settings_btn_change_photo_width"
         android:layout_height="@dimen/settings_btn_change_photo_height"
         android:src="@drawable/ic_camera"
-        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/app_margin"
         app:civ_circle_background_color="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/settings_header_block"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_header_block"
-        android:layout_marginRight="@dimen/horizontal_margin" />
+        android:layout_marginRight="@dimen/app_margin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

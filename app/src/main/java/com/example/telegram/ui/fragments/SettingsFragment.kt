@@ -1,17 +1,13 @@
 package com.example.telegram.ui.fragments
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.net.Uri
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.example.telegram.R
-import com.example.telegram.activities.RegisterActivity
+import com.example.telegram.database.*
 import com.example.telegram.utils.*
-import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -35,7 +31,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         settings_btn_change_username.setOnClickListener { replaceFragment(ChangeUsernameFragment()) }
         settings_btn_change_bio.setOnClickListener { replaceFragment(ChangeBioFragment()) }
         settings_change_photo.setOnClickListener { changePhotoUser() }
-        if(!USER.photoUrl.isEmpty()){
+        if (!USER.photoUrl.isEmpty()) {
             settings_user_photo.downloadAndSetImage(USER.photoUrl)
         }
 
@@ -57,8 +53,9 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.settings_menu_exit -> {
+                AppStates.updateState(AppStates.OFFLINE)
                 AUTH.signOut()
-                APP_ACTIVITY.replaceActivity(RegisterActivity())
+                restartActivity()
             }
             R.id.settings_menu_change_name -> {
                 replaceFragment(ChangeNameFragment())
@@ -72,7 +69,9 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             val uri = CropImage.getActivityResult(data).uri
-            val path = REF_STORAGE_ROOT.child(FOLDER_PROFILE_IMAGE).child(CURRENT_UID)
+            val path = REF_STORAGE_ROOT.child(
+                FOLDER_PROFILE_IMAGE
+            ).child(CURRENT_UID)
 
             putImageToStorage(uri, path) {
                 getUrlFromStorage(path) {

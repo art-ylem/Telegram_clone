@@ -1,24 +1,26 @@
 package com.example.telegram
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.telegram.activities.RegisterActivity
+import androidx.core.content.ContextCompat
+import com.example.telegram.database.AUTH
+import com.example.telegram.database.initFirebase
+import com.example.telegram.database.initUser
 import com.example.telegram.databinding.ActivityMainBinding
-import com.example.telegram.models.User
-import com.example.telegram.ui.fragments.ChatsFragment
+import com.example.telegram.ui.fragments.MainFragment
+import com.example.telegram.ui.fragments.register.EnterPhoneNumberFragment
 import com.example.telegram.ui.objects.AppDrawer
 import com.example.telegram.utils.*
-import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityMainBinding
-    private lateinit var mToolbar: Toolbar
+    lateinit var mToolbar: Toolbar
     lateinit var mAppDrawer: AppDrawer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,26 +30,29 @@ class MainActivity : AppCompatActivity() {
         APP_ACTIVITY = this
         initFirebase()
         initUser {
+            CoroutineScope(Dispatchers.IO).launch {
+                initContacts()
+            }
             initFields()
             initFunc()
         }
 
     }
 
-    private fun initFunc() {
 
+    private fun initFunc() {
+        setSupportActionBar(mToolbar)
         if (AUTH.currentUser != null) {
-            setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(ChatsFragment(), false)
+            replaceFragment(MainFragment(), false)
         } else {
-            replaceActivity(RegisterActivity())
+            replaceFragment(EnterPhoneNumberFragment(),false)
         }
     }
 
     private fun initFields() {
         mToolbar = mBinding.mainToolbar
-        mAppDrawer = AppDrawer(this, mToolbar)
+        mAppDrawer = AppDrawer()
 
     }
 
@@ -59,5 +64,20 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         AppStates.updateState(AppStates.OFFLINE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (ContextCompat.checkSelfPermission(
+                APP_ACTIVITY,
+                READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            initContacts()
+        }
     }
 }

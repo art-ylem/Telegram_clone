@@ -1,5 +1,7 @@
 package com.example.telegram.utils
 
+import com.example.telegram.database.*
+
 enum class AppStates(val state: String) {
     ONLINE("В сети"),
     OFFLINE("был недавно"),
@@ -7,10 +9,18 @@ enum class AppStates(val state: String) {
 
     companion object {
         fun updateState(appStates: AppStates) {
-            REF_DATABASE_ROOT.child(NODE_USERS).child(CURRENT_UID).child(CHILD_STATE)
-                .setValue(appStates.state)
-                .addOnCompleteListener { USER.state = appStates.state }
-                .addOnFailureListener { showToast(it.message.toString()) }
+
+            if(AUTH.currentUser != null){
+                REF_DATABASE_ROOT.child(
+                    NODE_USERS
+                ).child(CURRENT_UID).child(
+                    CHILD_STATE
+                )
+                    .setValue(appStates.state)
+                    .addOnCompleteListener { USER.state = appStates.state }
+                    .addOnFailureListener { showToast(it.message.toString()) }
+            }
+
         }
     }
 }
