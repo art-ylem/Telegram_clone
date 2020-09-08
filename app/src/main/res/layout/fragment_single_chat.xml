@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.single_chat.SingleChatFragment">
+    tools:context=".ui.screens.single_chat.SingleChatFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/chat_swipe_refresh"
@@ -28,7 +28,7 @@
     <EditText
         android:id="@+id/chat_input_message"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:hint="Сообщение"
         android:padding="@dimen/appPadding"
         android:textColor="@color/colorBlack"
@@ -43,6 +43,28 @@
         android:layout_height="50dp"
         android:padding="@dimen/appPadding"
         android:src="@drawable/ic_send"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chat_input_message" />
+
+    <ImageView
+        android:id="@+id/chat_btn_attach"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="@dimen/appPadding"
+        android:background="@color/colorAccent"
+        android:src="@drawable/ic_attach"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/chat_btn_voice"
+        app:layout_constraintTop_toTopOf="@id/chat_input_message" />
+    <ImageView
+        android:id="@+id/chat_btn_voice"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="@dimen/appPadding"
+        android:background="@color/colorAccent"
+        android:src="@drawable/ic_voice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/chat_input_message" />

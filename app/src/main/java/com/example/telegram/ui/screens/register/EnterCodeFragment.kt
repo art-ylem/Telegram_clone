@@ -1,4 +1,4 @@
-package com.example.telegram.ui.fragments.register
+package com.example.telegram.ui.screens.register
 
 import androidx.fragment.app.Fragment
 import com.example.telegram.R
@@ -30,7 +30,14 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
                 val dataMap = mutableMapOf<String, Any>()
                 dataMap[CHILD_ID] = uid
                 dataMap[CHILD_PHONE] = phoneNumber
-                dataMap[CHILD_USERNAME] = uid
+
+                REF_DATABASE_ROOT.child(NODE_USERS).child(uid)
+                    .addListenerForSingleValueEvent(AppValueEventListener{
+                        if(!it.hasChild(CHILD_USERNAME)){
+                            dataMap[CHILD_USERNAME] = uid
+
+                        }
+                    })
 
                 REF_DATABASE_ROOT.child(
                     NODE_PHONES

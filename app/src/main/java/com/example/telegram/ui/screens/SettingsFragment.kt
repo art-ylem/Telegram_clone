@@ -1,4 +1,4 @@
-package com.example.telegram.ui.fragments
+package com.example.telegram.ui.screens
 
 import android.app.Activity
 import android.content.Intent
@@ -40,7 +40,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     private fun changePhotoUser() {
         CropImage.activity()
             .setAspectRatio(1, 1)
-            .setRequestedSize(600, 600)
+            .setRequestedSize(250, 250)
             .setCropShape(CropImageView.CropShape.OVAL)
             .start(APP_ACTIVITY, this)
     }
@@ -73,7 +73,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
                 FOLDER_PROFILE_IMAGE
             ).child(CURRENT_UID)
 
-            putImageToStorage(uri, path) {
+            putFileToStorage(uri, path) {
                 getUrlFromStorage(path) {
                     putUrlToDatabase(it) {
                         settings_user_photo.downloadAndSetImage(it)
