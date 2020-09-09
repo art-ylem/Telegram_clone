@@ -17,10 +17,12 @@ import com.example.telegram.models.CommonModel
 import com.example.telegram.models.UserModel
 import com.example.telegram.ui.screens.BaseFragment
 import com.example.telegram.ui.message_recycler_view.views.AppViewFactory
+import com.example.telegram.ui.screens.main_list.MainListFragment
 import com.example.telegram.ui.screens.settings.ChangeNameFragment
 import com.example.telegram.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.DatabaseReference
+import com.mikepenz.fastadapter.dsl.genericFastAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.choice_upload.*
@@ -276,9 +278,17 @@ class SingleChatFragment(private val contact: CommonModel) :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-
+            R.id.menu_clear_chat -> clearChat(contact.id){
+                showToast("Chat was cleared")
+                replaceFragment(MainListFragment())
+            }
+            R.id.menu_delete_chat -> deleteChat(contact.id){
+                 showToast("Chat was deleted")
+                replaceFragment(MainListFragment())
+            }
 
         }
         return true
     }
+
 }

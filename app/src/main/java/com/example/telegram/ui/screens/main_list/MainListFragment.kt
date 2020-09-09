@@ -38,19 +38,24 @@ class MainListFragment : Fragment(R.layout.fragment_main_list) {
             mListItems.forEach { model ->
 
                 // second request
-                mRefUsers.child(model.id).addListenerForSingleValueEvent(AppValueEventListener{ dataSnapshot1 ->
-                    val newModel = dataSnapshot1.getCommonModel()
+                mRefUsers.child(model.id)
+                    .addListenerForSingleValueEvent(AppValueEventListener { dataSnapshot1 ->
+                        val newModel = dataSnapshot1.getCommonModel()
 
-                    // third request
-                    mRefMessages.child(model.id).limitToLast(1)
-                        .addListenerForSingleValueEvent(AppValueEventListener{ dataSnapshot2 ->
-                            val tempList = dataSnapshot2.children.map { it.getCommonModel() }
-                            newModel.lastMessage = tempList[0].text
-
-                            if(newModel.fullname.isEmpty()) newModel.fullname = newModel.phone
-                            mAdapter.updateListItems(newModel)
-                        })
-                })
+                        // third request
+                        mRefMessages.child(model.id).limitToLast(1)
+                            .addListenerForSingleValueEvent(AppValueEventListener { dataSnapshot2 ->
+                                val tempList = dataSnapshot2.children.map { it.getCommonModel() }
+                                if (tempList.isEmpty()) {
+                                    newModel.lastMessage = "чат очищен"
+                                } else {
+                                    newModel.lastMessage = tempList[0].text
+                                }
+                                
+                                if (newModel.fullname.isEmpty()) newModel.fullname = newModel.phone
+                                mAdapter.updateListItems(newModel)
+                            })
+                    })
             }
         })
 
