@@ -5,8 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.widget.AbsListView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import com.example.telegram.models.CommonModel
 import com.example.telegram.models.UserModel
 import com.example.telegram.ui.screens.BaseFragment
 import com.example.telegram.ui.message_recycler_view.views.AppViewFactory
+import com.example.telegram.ui.screens.settings.ChangeNameFragment
 import com.example.telegram.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.DatabaseReference
@@ -59,6 +59,7 @@ class SingleChatFragment(private val contact: CommonModel) :
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initFields() {
+        setHasOptionsMenu(true)
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_choice)
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         mAppVoiceRecorder = AppVoiceRecorder()
@@ -214,6 +215,7 @@ class SingleChatFragment(private val contact: CommonModel) :
                 contact.id,
                 TYPE_TEXT
             ) {
+                saveToMainList(contact.id, TYPE_CHAT)
                 chat_input_message.setText("")
             }
         }
@@ -229,7 +231,9 @@ class SingleChatFragment(private val contact: CommonModel) :
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         /* Активность которая запускается для получения картинки для фото пользователя */
+
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
             when (requestCode) {
@@ -243,7 +247,8 @@ class SingleChatFragment(private val contact: CommonModel) :
                 PICK_FILE_REQUEST_CODE -> {
                     val uri = data.data
                     val messageKey = getMessageKey(contact.id)
-                    uri?.let { uploadFileToStorage(it, messageKey, contact.id, TYPE_MESSAGE_FILE) }
+                    val filename = getFilenameFromUri(uri!!)
+                    uploadFileToStorage(uri, messageKey, contact.id, TYPE_MESSAGE_FILE,filename)
                     mSmoothScrollToPosition = true
                 }
             }
@@ -261,5 +266,19 @@ class SingleChatFragment(private val contact: CommonModel) :
         super.onDestroyView()
         mAppVoiceRecorder.releaseRecorder()
         mAdapter.onDestroy()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        activity?.menuInflater?.inflate(R.menu.single_chat_action_menu, menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+
+
+        }
+        return true
     }
 }

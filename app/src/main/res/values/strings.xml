@@ -27,4 +27,6 @@
     <string name="settings_hint_default_username">username</string>
     <string name="settings_toast_username_has_exist">Такой пользователь уже существует</string>
     <string name="settings_hint_input_bio">bio</string>
+    <string name="clear_chat">Отчистить чат</string>
+    <string name="delete_chat">Удалить чат</string>
 </resources>

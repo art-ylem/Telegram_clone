@@ -19,6 +19,7 @@ const val NODE_MESSAGES = "messages"
 const val NODE_USERNAMES = "usernames"
 const val NODE_PHONES = "phones"
 const val NODE_PHONES_CONSTACTS = "phones_contacts"
+const val NODE_MAIN_LIST = "main_list"
 
 const val CHILD_ID = "id"
 const val CHILD_PHONE = "phone"
